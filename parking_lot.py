@@ -2,162 +2,144 @@ import random
 
 
 class Vehicle:
-    parked_vehicle = 0
 
     def __init__(self):
-        pass
+        self.parked_vehicle = 0
 
     def vehicle_type(self):
         pass
 
-    @classmethod
-    def reset(cls):
-        cls.parked_vehicle = 0
+    def reset(self):
+        self.parked_vehicle = 0
 
-    @classmethod
-    def __str__(cls):
-        return f"{cls.parked_vehicle} {cls.__name__}s are parked"
+    def vehicle_parked(self):
+        return f"{self.parked_vehicle} {self.__class__.__name__}s are parked"
 
 
 class Motorcycle(Vehicle):
-    parked_vehicle = 0
 
     def __init__(self):
         super().__init__()
 
-    def vehicle_type(self):
-        return "Motorcycle"
+    def park_vehicle(self):
+        ms.park_spot()
+        self.parked_vehicle = ms.occupied_spots
 
-    @classmethod
-    def park_vehicle(cls):
-        MotorcycleSpot()
-        MotorcycleSpot.park_spot()
-        cls.parked_vehicle = MotorcycleSpot.occupied_spots
-
-    @classmethod
-    def unpark_vehicle(cls):
-        MotorcycleSpot.unpark_spot()
-        cls.parked_vehicle = MotorcycleSpot.occupied_spots
+    def unpark_vehicle(self):
+        ms.unpark_spot()
+        self.parked_vehicle = ms.occupied_spots
 
 
 class Car(Vehicle):
-    parked_vehicle = 0
 
     def __init__(self):
         super().__init__()
 
-    def vehicle_type(self):
-        return "Car"
+    def park_vehicle(self):
+        cs.park_spot()
+        self.parked_vehicle = cs.occupied_spots
 
-    @classmethod
-    def park_vehicle(cls):
-        CarSpot()
-        CarSpot.park_spot()
-        cls.parked_vehicle = CarSpot.occupied_spots
-
-    @classmethod
-    def unpark_vehicle(cls):
-        CarSpot.unpark_spot()
-        cls.parked_vehicle = CarSpot.occupied_spots
+    def unpark_vehicle(self):
+        cs.unpark_spot()
+        self.parked_vehicle = cs.occupied_spots
 
 
 class Truck(Vehicle):
-    parked_vehicle = 0
 
     def __init__(self):
         super().__init__()
 
-    def vehicle_type(self):
-        return "Truck"
+    def park_vehicle(self):
+        ts.park_spot()
+        self.parked_vehicle = ts.occupied_spots
 
-    @classmethod
-    def park_vehicle(cls):
-        TruckSpot()
-        TruckSpot.park_spot()
-        cls.parked_vehicle = TruckSpot.occupied_spots
-
-    @classmethod
-    def unpark_vehicle(cls):
-        TruckSpot.unpark_spot()
-        cls.parked_vehicle = TruckSpot.occupied_spots
+    def unpark_vehicle(self):
+        ts.unpark_spot()
+        self.parked_vehicle = ts.occupied_spots
 
 
 class ParkingSpot:
-    available_spots = 0
-    occupied_spots = 0
 
-    @classmethod
-    def reset(cls):
-        cls.available_spots = 0
-        cls.occupied_spots = 0
-        Motorcycle.reset()
-        Car.reset()
-        Truck.reset()
+    def __init__(self):
+        self.available_spots = 0
+        self.occupied_spots = 0
 
-    @classmethod
-    def update_available_spots(cls):
-        cls.available_spots += 1
+    def reset(self):
+        self.available_spots = 0
+        self.occupied_spots = 0
 
-    @classmethod
-    def park_spot(cls):
-        if cls.available_spots > 0:
-            cls.available_spots -= 1
-            cls.occupied_spots += 1
-            print(f"Parked on {cls.__name__}")
+    def update_available_spots(self):
+        self.available_spots += 1
+
+    def park_spot(self):
+        if self.available_spots > 0:
+            self.available_spots -= 1
+            self.occupied_spots += 1
+            print(f"\nParked on {self.__class__.__name__}")
         else:
-            print(f"No available {cls.__name__}")
+            print(f"\nNo available {self.__class__.__name__}")
 
-    @classmethod
-    def unpark_spot(cls):
-        if cls.occupied_spots > 0:
-            cls.available_spots += 1
-            cls.occupied_spots -= 1
-            print(f"Unparked vehicle from {cls.__name__}")
+    def unpark_spot(self):
+        if self.occupied_spots > 0:
+            self.available_spots += 1
+            self.occupied_spots -= 1
+            print(f"\nUnparked vehicle from {self.__class__.__name__}")
         else:
-            print(f"No vehicle parked on {cls.__name__}")
+            print(f"\nNo vehicle parked on {self.__class__.__name__}")
 
 
 class MotorcycleSpot(ParkingSpot):
-    available_spots = 0
-    occupied_spots = 0
 
     def __init__(self):
         super().__init__()
+        self.available_spots = 0
+        self.occupied_spots = 0
         self.spot_size = 1
 
-    def __str__(self):
-        return f"{self.available_spots} motorcycle spots available"
+    def free_spots(self):
+        return f"\n{self.available_spots} motorcycle spots available"
 
 
 class CarSpot(ParkingSpot):
-    available_spots = 0
-    occupied_spots = 0
 
     def __init__(self):
         super().__init__()
+        self.available_spots = 0
+        self.occupied_spots = 0
         self.spot_size = 2
 
-    def __str__(self):
+    def free_spots(self):
         return f"{self.available_spots} car spots available"
 
 
 class TruckSpot(ParkingSpot):
-    available_spots = 0
-    occupied_spots = 0
 
     def __init__(self):
         super().__init__()
+        self.available_spots = 0
+        self.occupied_spots = 0
         self.spot_size = 3
 
-    def __str__(self):
+    def free_spots(self):
         return f"{self.available_spots} truck spots available"
+
+
+ms = MotorcycleSpot()
+cs = CarSpot()
+ts = TruckSpot()
+mc = Motorcycle()
+car = Car()
+truck = Truck()
 
 
 def parkinglot_size():
     global combination
-    MotorcycleSpot.reset()
-    CarSpot.reset()
-    TruckSpot.reset()
+    ms.reset()
+    cs.reset()
+    ts.reset()
+    mc.reset()
+    car.reset()
+    truck.reset()
     target_sum = int(input("Enter parking lot size: "))
     if target_sum:
         combination = random.choice(find_combinations(target_sum=target_sum, numbers=[1, 2, 3]))
@@ -181,10 +163,6 @@ def find_combinations(numbers, target_sum):
 
 
 def assign_combination():
-    cs = CarSpot()
-    ms = MotorcycleSpot()
-    ts = TruckSpot()
-
     for i in combination:
         if i == ms.spot_size:
             ms.update_available_spots()
@@ -213,47 +191,44 @@ while True:
             print("3. Park a truck")
             park_choice = input("Enter your choice (1-3 or q to return): ")
             if park_choice == "1":
-                Motorcycle()
-                Motorcycle.park_vehicle()
+                mc.park_vehicle()
             elif park_choice == "2":
-                Car()
-                Car.park_vehicle()
+                car.park_vehicle()
             elif park_choice == "3":
-                Truck()
-                Truck.park_vehicle()
+                truck.park_vehicle()
             elif park_choice == "q":
                 break
             else:
                 print("Invalid choice. Please try again.")
     elif choice == "2":
         while True:
-            print("1. Unpark a motorcycle")
+            print("\n1. Unpark a motorcycle")
             print("2. Unpark a car")
             print("3. Unpark a truck")
             unpark_choice = input("Enter your choice (1-3 or q to return): ")
 
             if unpark_choice == "1":
-                Motorcycle.unpark_vehicle()
+                mc.unpark_vehicle()
             elif unpark_choice == "2":
-                Car.unpark_vehicle()
+                car.unpark_vehicle()
             elif unpark_choice == "3":
-                Truck.unpark_vehicle()
+                truck.unpark_vehicle()
             elif unpark_choice == "q":
                 break
             else:
-                print("Invalid choice. Please try again.")
+                print("\nInvalid choice. Please try again.")
 
     elif choice == "3":
-        print(MotorcycleSpot())
-        print(CarSpot())
-        print(TruckSpot())
+        print(ms.free_spots())
+        print(cs.free_spots())
+        print(ts.free_spots())
     elif choice == "4":
-        print(Motorcycle())
-        print(Car())
-        print(Truck())
+        print(mc.vehicle_parked())
+        print(car.vehicle_parked())
+        print(truck.vehicle_parked())
     elif choice == "5":
         parkinglot_size()
     elif choice == "q":
         break
     else:
-        print("Invalid choice. Please try again.")
+        print("\nInvalid choice. Please try again.")
