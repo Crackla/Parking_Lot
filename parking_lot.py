@@ -92,8 +92,6 @@ class MotorcycleSpot(ParkingSpot):
 
     def __init__(self):
         super().__init__()
-        self.available_spots = 0
-        self.occupied_spots = 0
         self.spot_size = 1
 
     def free_spots(self):
@@ -104,8 +102,6 @@ class CarSpot(ParkingSpot):
 
     def __init__(self):
         super().__init__()
-        self.available_spots = 0
-        self.occupied_spots = 0
         self.spot_size = 2
 
     def free_spots(self):
@@ -116,8 +112,6 @@ class TruckSpot(ParkingSpot):
 
     def __init__(self):
         super().__init__()
-        self.available_spots = 0
-        self.occupied_spots = 0
         self.spot_size = 3
 
     def free_spots(self):
