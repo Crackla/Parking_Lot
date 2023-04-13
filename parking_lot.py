@@ -9,6 +9,14 @@ class Vehicle:
     def vehicle_type(self):
         pass
 
+    def park_vehicle(self, parkingspot):
+        parkingspot.park_spot()
+        self.parked_vehicle = parkingspot.occupied_spots
+
+    def unpark_vehicle(self, parkingspot):
+        parkingspot.unpark_spot()
+        self.parked_vehicle = parkingspot.occupied_spots
+
     def reset(self):
         self.parked_vehicle = 0
 
@@ -21,41 +29,17 @@ class Motorcycle(Vehicle):
     def __init__(self):
         super().__init__()
 
-    def park_vehicle(self):
-        ms.park_spot()
-        self.parked_vehicle = ms.occupied_spots
-
-    def unpark_vehicle(self):
-        ms.unpark_spot()
-        self.parked_vehicle = ms.occupied_spots
-
 
 class Car(Vehicle):
 
     def __init__(self):
         super().__init__()
 
-    def park_vehicle(self):
-        cs.park_spot()
-        self.parked_vehicle = cs.occupied_spots
-
-    def unpark_vehicle(self):
-        cs.unpark_spot()
-        self.parked_vehicle = cs.occupied_spots
-
 
 class Truck(Vehicle):
 
     def __init__(self):
         super().__init__()
-
-    def park_vehicle(self):
-        ts.park_spot()
-        self.parked_vehicle = ts.occupied_spots
-
-    def unpark_vehicle(self):
-        ts.unpark_spot()
-        self.parked_vehicle = ts.occupied_spots
 
 
 class ParkingSpot:
@@ -95,7 +79,7 @@ class MotorcycleSpot(ParkingSpot):
         self.spot_size = 1
 
     def free_spots(self):
-        return f"\n{self.available_spots} motorcycle spots available"
+        return f"{self.available_spots} motorcycle spots available"
 
 
 class CarSpot(ParkingSpot):
@@ -118,20 +102,20 @@ class TruckSpot(ParkingSpot):
         return f"{self.available_spots} truck spots available"
 
 
-ms = MotorcycleSpot()
-cs = CarSpot()
-ts = TruckSpot()
-mc = Motorcycle()
+motorcycle_spot = MotorcycleSpot()
+car_spot = CarSpot()
+truck_spot = TruckSpot()
+motorcycle = Motorcycle()
 car = Car()
 truck = Truck()
 
 
 def parkinglot_size():
     global combination
-    ms.reset()
-    cs.reset()
-    ts.reset()
-    mc.reset()
+    motorcycle_spot.reset()
+    car_spot.reset()
+    truck_spot.reset()
+    motorcycle.reset()
     car.reset()
     truck.reset()
     target_sum = int(input("Enter parking lot size: "))
@@ -158,12 +142,12 @@ def find_combinations(numbers, target_sum):
 
 def assign_combination():
     for i in combination:
-        if i == ms.spot_size:
-            ms.update_available_spots()
-        if i == cs.spot_size:
-            cs.update_available_spots()
-        if i == ts.spot_size:
-            ts.update_available_spots()
+        if i == motorcycle_spot.spot_size:
+            motorcycle_spot.update_available_spots()
+        if i == car_spot.spot_size:
+            car_spot.update_available_spots()
+        if i == truck_spot.spot_size:
+            truck_spot.update_available_spots()
 
 
 parkinglot_size()
@@ -185,11 +169,11 @@ while True:
             print("3. Park a truck")
             park_choice = input("Enter your choice (1-3 or q to return): ")
             if park_choice == "1":
-                mc.park_vehicle()
+                motorcycle.park_vehicle(motorcycle_spot)
             elif park_choice == "2":
-                car.park_vehicle()
+                car.park_vehicle(car_spot)
             elif park_choice == "3":
-                truck.park_vehicle()
+                truck.park_vehicle(truck_spot)
             elif park_choice == "q":
                 break
             else:
@@ -202,22 +186,22 @@ while True:
             unpark_choice = input("Enter your choice (1-3 or q to return): ")
 
             if unpark_choice == "1":
-                mc.unpark_vehicle()
+                motorcycle.unpark_vehicle(motorcycle_spot)
             elif unpark_choice == "2":
-                car.unpark_vehicle()
+                car.unpark_vehicle(car_spot)
             elif unpark_choice == "3":
-                truck.unpark_vehicle()
+                truck.unpark_vehicle(truck_spot)
             elif unpark_choice == "q":
                 break
             else:
                 print("\nInvalid choice. Please try again.")
 
     elif choice == "3":
-        print(ms.free_spots())
-        print(cs.free_spots())
-        print(ts.free_spots())
+        print(f"\n{motorcycle_spot.free_spots()}")
+        print(car_spot.free_spots())
+        print(truck_spot.free_spots())
     elif choice == "4":
-        print(mc.vehicle_parked())
+        print(f"\n{motorcycle.vehicle_parked()}")
         print(car.vehicle_parked())
         print(truck.vehicle_parked())
     elif choice == "5":
